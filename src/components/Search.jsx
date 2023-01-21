@@ -37,5 +37,3 @@ export function Search({ search, setSearch }) {
     </InputContainer>
   )
 }
-
-// export default Search

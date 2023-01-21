@@ -6,7 +6,6 @@ import styled from 'styled-components'
 const HeaderEl = styled.header`
   box-shadow: var(--shadow);
   background-color: var(--colors-ui-base);
-  /* background-color: hsl(207deg 83% 51%); */
 `
 
 const Wrapper = styled.div`
