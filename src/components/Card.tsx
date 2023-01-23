@@ -20,6 +20,7 @@ const CardBody = styled.div`
   padding: 1rem 1.5rem 2rem;
 `
 const CardTitle = styled.h3`
+  text-decoration: none;
   margin: 0;
   font-size: var(--fs-md);
   font-weight: var(--fw-bold);
@@ -43,6 +44,7 @@ interface countrieProps {
   img: string
   name: string
   info: IInfo[]
+  onClick(active: unknown): void
 }
 
 export interface IInfo {
@@ -50,12 +52,9 @@ export interface IInfo {
   description: string
 }
 
-function Card({ img, name, info }: countrieProps) {
-  // onClick
-
+function Card({ img, name, info, onClick }: countrieProps) {
   return (
-    <Wrapper>
-      {/* onClick={onClick} */}
+    <Wrapper onClick={onClick}>
       <CardImage src={img} alt={name} />
       <CardBody>
         <CardTitle>{name}</CardTitle>
