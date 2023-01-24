@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Controls from '../components/Controls'
 import List from '../components/List'
@@ -16,44 +16,67 @@ interface homeProps {
 }
 
 function HomePage({ countries, setCountries }: homeProps) {
+  const [filteredCounties, setFilteredCounties] = useState(countries)
+  const [isFiltered, setIsFiltered] = useState(false)
+
   useEffect(() => {
-    if (!countries.length)
-      axios.get(ALL_COUNTRIES).then(({ data }) => setCountries(data))
+    axios.get(ALL_COUNTRIES).then(({ data }) => setCountries(data))
   }, [])
 
+  const handleSearch = (search: string, region: string) => {
+    let data = [...countries]
+    if (search === '' && region === '') {
+      setIsFiltered(false)
+      return
+    }
+    if (region) {
+      data = data.filter((c) => c.region.includes(region))
+    }
+    if (search) {
+      data = data.filter((c) =>
+        c.name.toLowerCase().includes(search.toLowerCase())
+      )
+    }
+    setIsFiltered(true)
+    setFilteredCounties(data)
+  }
+
   const navigate = useNavigate()
+
   return (
     <>
-      <Controls />
+      <Controls OnSearch={handleSearch} />
       <List>
-        {countries.map((countrie: ICountries) => {
-          const countryInfo = {
-            img: countrie.flags.png,
-            name: countrie.name,
-            info: [
-              {
-                title: 'Population',
-                description: countrie.population.toLocaleString(),
-              },
-              {
-                title: 'Region',
-                description: countrie.region,
-              },
-              {
-                title: 'Capital',
-                description: countrie.capital,
-              },
-            ],
-          }
+        {(isFiltered ? filteredCounties : countries).map(
+          (countrie: ICountries) => {
+            const countryInfo = {
+              img: countrie.flags.png,
+              name: countrie.name,
+              info: [
+                {
+                  title: 'Population',
+                  description: countrie.population.toLocaleString(),
+                },
+                {
+                  title: 'Region',
+                  description: countrie.region,
+                },
+                {
+                  title: 'Capital',
+                  description: countrie.capital,
+                },
+              ],
+            }
 
-          return (
-            <Card
-              key={countrie.name}
-              {...countryInfo}
-              onClick={() => navigate(`/country/${countrie.name}`)}
-            />
-          )
-        })}
+            return (
+              <Card
+                key={countryInfo.name}
+                {...countryInfo}
+                onClick={() => navigate(`/country/${countrie.name}`)}
+              />
+            )
+          }
+        )}
       </List>
     </>
   )

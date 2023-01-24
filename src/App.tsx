@@ -1,6 +1,5 @@
-import axios from 'axios'
 import { Route, Routes } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import Header from './components/Header'
 import Main from './components/Main'
@@ -24,7 +23,6 @@ function App() {
           ></Route>
           <Route path='*' element={<NotFound />} />
           <Route path='/country/:name' element={<Detail />} />
-          {/* <Route path='/' element={<HomePage />} /> */}
         </Routes>
       </Main>
     </>

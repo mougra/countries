@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { IInfo } from '../models/models'
 
 const Wrapper = styled.article`
   border-radius: var(--radii);
@@ -47,11 +48,6 @@ interface countrieProps {
   onClick(active: unknown): void
 }
 
-export interface IInfo {
-  title: string
-  description: string
-}
-
 function Card({ img, name, info, onClick }: countrieProps) {
   return (
     <Wrapper onClick={onClick}>
@@ -61,7 +57,7 @@ function Card({ img, name, info, onClick }: countrieProps) {
         <CardList>
           {info.length > 1 &&
             info.map((inf) => (
-              <CardListItem>
+              <CardListItem key={inf.title}>
                 <b>{inf.title}:</b> {inf.description}
               </CardListItem>
             ))}

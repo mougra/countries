@@ -23,9 +23,16 @@ const Wrapper = styled.div`
   }
 `
 
-function Controls() {
+function Controls({ OnSearch }) {
   const [search, setSearch] = useState('')
   const [region, setRegion] = useState('')
+
+  useEffect(() => {
+    const regionValue = region?.value || ''
+    OnSearch(search, regionValue)
+    // eslint-disable-next-line
+  }, [search, region])
+
   return (
     <Wrapper>
       <Search search={search} setSearch={setSearch} />

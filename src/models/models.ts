@@ -7,12 +7,7 @@ export interface ICountries {
   region: string
 }
 
-export interface ServerResponse<T> {
-  info: {
-    count: number
-    pages: number
-    next: string
-    prev: string
-  }
-  results: T[]
+export interface IInfo {
+  title: string
+  description: string
 }
