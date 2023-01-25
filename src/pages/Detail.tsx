@@ -21,21 +21,10 @@ const Button = styled.button`
   cursor: pointer;
 `
 
-const CardImage = styled.img`
-  display: block;
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  object-position: center;
-  box-shadow: var(--shadow);
-`
-
 function Detail() {
   const navigate = useNavigate()
   const { name } = useParams()
   const [country, setCountry] = useState(null)
-
-  console.log(country)
 
   useEffect(() => {
     axios.get(seacrhByCountry(name)).then(({ data }) => setCountry(data[0]))

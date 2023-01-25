@@ -1,5 +1,8 @@
 import styled from 'styled-components'
-import { IInfo } from '../models/models'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { filterByCode } from './../config'
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -17,16 +20,15 @@ const Wrapper = styled.section`
     grid-template-columns: minmax(400px, 600px) 1fr;
   }
 `
-
 const InfoImage = styled.img`
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
 `
-
 const InfoTitle = styled.h1`
   margin: 0;
+  margin-bottom: 2rem;
   font-weight: var(--fw-normal);
 `
 
@@ -40,25 +42,45 @@ const ListGroup = styled.div`
     gap: 4rem;
   }
 `
-
 const List = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
 `
+const ListItem = styled.li`
+  line-height: 1.8;
 
-const ListItem = styled.li``
-const Meta = styled.div``
-const TagGroup = styled.div``
-const Tag = styled.span``
+  & > b {
+    font-weight: var(--fw-bold);
+  }
+`
+const Meta = styled.div`
+  margin-top: 3rem;
+  display: flex;
+  gap: 1.5rem;
+  flex-direction: column;
+  align-items: flex-start;
 
-// interface countrieProps {
-//   img: string
-//   name: string
-//   info: IInfo[]
-//   onClick(active: unknown): void
-// }
+  & > b {
+    font-weight: var(--fw-bold);
+  }
 
+  @media (min-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+  }
+`
+const TagGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+`
+const Tag = styled.span`
+  padding: 0 1rem;
+  background-color: var(--color-ui-base);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+`
 function Info({ props }: any) {
   const {
     name,
@@ -72,8 +94,18 @@ function Info({ props }: any) {
     currentcies = [],
     languages = [],
     borders = [],
-    push,
   } = props
+
+  const [neighbors, setNeighbors] = useState([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (borders.length)
+      axios
+        .get(filterByCode(borders))
+        .then(({ data }) => setNeighbors(data.map((c: any) => c.name)))
+  }, [borders])
+
   return (
     <>
       <Wrapper>
@@ -126,8 +158,10 @@ function Info({ props }: any) {
               <span>There is no border countries</span>
             ) : (
               <TagGroup>
-                {borders.map((b: any) => (
-                  <Tag key={b}>{b}</Tag>
+                {neighbors.map((b: any) => (
+                  <Tag key={b} onClick={() => navigate(`/country/${b}`)}>
+                    {b}
+                  </Tag>
                 ))}
               </TagGroup>
             )}
